@@ -1,0 +1,23 @@
+version: "3.9"
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: my-app
+    ports:
+      - "5000:5000"
+    environment:
+      - PYTHONPATH=/app
+    command: ["python", "app/main.py"]
+
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: my-app-tests
+    environment:
+      - PYTHONPATH=/app
+#    command: ["pytest", "--maxfail=1", "--disable-warnings", "-v", "tests/"]
+    command: ["/bin/sh", "-c", "PYTHONPATH=/app pytest --maxfail=1 --disable-warnings -v tests/"] #Set PYTHONPATH before pytest.
